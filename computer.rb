@@ -13,7 +13,7 @@ class Computer
   def initialize
     @code = player_create_code
     @guess_array = ['1', '1', '2', '2'] # initial guess
-    @possible_codes = (1111..6666).map { |num| num }
+    @possible_codes = (1111..6666).map { |num| num.to_s }
     @num_red_dots = 0
     @num_white_dots = 0
 
@@ -38,34 +38,36 @@ class Computer
     round = 1
 
     until solved || round == 13
-      binding.pry
+      # binding.pry
       dots_array = guess_in_code?(@guess_array, @code) # returns array with dots
+      p dots_array
+      count_dots(dots_array)
       solved = code_solved?(dots_array, @guess_array)
-      remove_codes(dots_array)
-      make_guess(dots_array)
-
+      remove_codes
+      make_guess
       round += 1
     end
   end
 
-  def make_guess(dots_array)
-    
+  def make_guess
+    @guess_array = @possible_codes.first.split('')
   end
 
   def count_dots(dots_array)
     dots_array.each { |dot| dot == "\e[38;2;255;0;0m\u25CF\e[0m" ? @num_red_dots += 1 : @num_white_dots += 1 }
   end
 
-  def remove_codes(dots_array)
-    new_array = @possible_codes.map do |code|
-      dot_array_check = guess_in_code?(code.to_s.split(''), @code)
-      if dot_array_check.length == dots_array.length
+  def remove_codes
+    @possible_codes.select! do |code|
+      temp_secret_code = code
+      # this makes dots and stores them in an array
+      temp_dots_array = guess_in_code?(temp_secret_code.split(''), @guess_array)
+
+      if temp_dots_array.count("\e[38;2;255;0;0m\u25CF\e[0m") == @num_red_dots &&
+        temp_dots_array.count("\e[38;2;255;255;255m\u25CF\e[0m") == @num_white_dots
         code
       end
     end
-    p "this is new array: #{new_array}"
+    puts "\t\tThis is new possible codes: #{@possible_codes}"
   end
 end
-
-# (dot_array_check.count("\e[38;2;255;0;0m\u25CF\e[0m") == @num_red_dots &&
-#         dot_array_check.count("\e[38;2;255;255;255m\u25CF\e[0m") == @num_white_dots)

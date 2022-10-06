@@ -23,7 +23,7 @@ module GameLogic
     # checks if dots array has all red dots and length of 4
     if dots_array.all? { |dot| dot == "\e[38;2;255;0;0m\u25CF\e[0m" } == true && dots_array.length == 4
       puts "\nCODE SOLVED!".fg_color(:green)
-      print_code(code)
+      print_code(current_guess)
       print "\n"
       true
     else
