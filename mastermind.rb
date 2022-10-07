@@ -29,5 +29,13 @@ class Game
       Computer.new.play
     end
   end
+
+  def validate_game_mode(user_input)
+    if user_input == 'break' || user_input == 'make'
+      user_input
+    else
+      puts "\nInvalid game mode, please choose either breaker or creator.".fg_color(:red)
+    end
+  end
 end
 Game.new.play

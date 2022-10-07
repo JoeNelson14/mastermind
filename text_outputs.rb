@@ -7,22 +7,6 @@ require './color_output'
 module TextOutputs
   include ColorOptions
   using ColorStrings
-  # def validate_input(user_input)
-  #   if COLOR_OPTIONS.include?(user_input) == false
-  #     puts "\nIncorrect color option #{user_input}, please choose another one".fg_color(:red)
-  #     false
-  #   else
-  #     true
-  #   end
-  # end
-
-  def validate_game_mode(user_input)
-    if (user_input == 'break' || user_input == 'make')
-      user_input
-    else
-      puts "\nInvalid game mode, please choose either breaker or creator.".fg_color(:red)
-    end
-  end
 
   def print_code(code)
     code.each do |num|
@@ -31,12 +15,17 @@ module TextOutputs
     end
   end
 
+  def invalid_input
+    puts 'Invalid input, please choose 4 numbers only and 1-6.'.fg_color(:red)
+  end
+
   def print_instructions
     puts "\nWelcome to MASTERMIND!"
     puts 'In this game you have a code maker and a code breaker, the code breaker will try to guess the code that is'
     puts 'created by the code maker. The code breaker will guess 4 colors starting from position 1-4.'
     puts 'Dots will appear next to the guess giving a hint to which ones are in the right spot and color,'
     puts 'right color wrong spot, or neither right color or spot. You have 12 rounds to try to guess the code.'
+    puts "\nWhen typing a code type numbers with no space (ex. 1234)."
     print "\nColor options: "
     print_code(COLOR_OPTIONS.keys)
     print "\n"

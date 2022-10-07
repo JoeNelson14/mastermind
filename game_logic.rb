@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require './color_output'
+require './text_outputs'
 
+# module for player and computer files for game logic
 module GameLogic
+  include TextOutputs
   using ColorStrings
 
-  def guess_in_code?(current_guess, code)
+  def check_guess(current_guess, code)
     dots_array = []
     code.each_index do |index|
       if current_guess.include?(code[index]) == true # checks if current number in code was guess or not
@@ -32,5 +35,9 @@ module GameLogic
       print "\n\n"
       false
     end
+  end
+
+  def validate_input(player_code)
+    false if player_code.length != 4 || player_code.any? { |num| num.to_i > 6 || num.to_i < 1 }
   end
 end
